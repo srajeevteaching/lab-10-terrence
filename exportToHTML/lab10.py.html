@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>lab10.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cc7832;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #808080;}
+.s4 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+lab10.py</font>
+</center></td></tr></table>
+<pre><span class="s0">def </span><span class="s1">load_morse_dictionary():</span>
+    <span class="s1">morse_dict = {}</span>
+    <span class="s0">with </span><span class="s1">open(</span><span class="s2">&quot;morsecode.txt&quot;</span><span class="s1">) </span><span class="s0">as </span><span class="s1">fp:</span>
+        <span class="s1">Lines = fp.readlines()</span>
+        <span class="s0">for </span><span class="s1">line </span><span class="s0">in </span><span class="s1">Lines:</span>
+            <span class="s1">key</span><span class="s0">, </span><span class="s1">value = line.split()</span>
+            <span class="s1">morse_dict[key] = value</span>
+    <span class="s0">return </span><span class="s1">morse_dict</span>
+
+
+<span class="s0">def </span><span class="s1">decode_file(filename</span><span class="s0">,</span><span class="s1">MORSE_CODE_DICT):</span>
+    <span class="s1">message = </span><span class="s2">&quot;&quot;</span>
+    <span class="s3"># reverse the key-value pairs of dict, so that we can access {&quot;morse code&quot;-&gt;&quot;character&quot;}</span>
+    <span class="s1">MORSE_CODE_DICT = dict(map(reversed</span><span class="s0">, </span><span class="s1">MORSE_CODE_DICT.items()))</span>
+    <span class="s3"># read the file of morse coded string</span>
+    <span class="s0">with </span><span class="s1">open(filename) </span><span class="s0">as </span><span class="s1">fp:</span>
+        <span class="s0">for </span><span class="s1">line </span><span class="s0">in </span><span class="s1">fp.readlines():</span>
+            <span class="s3"># remove newline &quot;/n&quot; character from lines. and merge them with a space</span>
+            <span class="s1">message += line.rstrip() + </span><span class="s2">&quot; &quot;</span>
+    <span class="s1">decipher = </span><span class="s2">''</span>
+    <span class="s1">citext = </span><span class="s2">''</span>
+    <span class="s0">for </span><span class="s1">letter </span><span class="s0">in </span><span class="s1">message:</span>
+        <span class="s3"># checks for space</span>
+        <span class="s0">if </span><span class="s1">(letter != </span><span class="s2">' '</span><span class="s1">):</span>
+            <span class="s3"># counter to keep track of space</span>
+            <span class="s1">i = </span><span class="s4">0</span>
+            <span class="s3"># storing morse code of a single character</span>
+            <span class="s1">citext += letter</span>
+        <span class="s0">else</span><span class="s1">:</span>
+            <span class="s3"># if i = 1 that indicates a new character</span>
+            <span class="s1">i += </span><span class="s4">1</span>
+            <span class="s3"># if i = 2 that indicates a new word</span>
+            <span class="s0">if </span><span class="s1">i == </span><span class="s4">2</span><span class="s1">:</span>
+                <span class="s3"># adding space to separate words</span>
+                <span class="s1">decipher += </span><span class="s2">' '</span>
+            <span class="s0">else</span><span class="s1">:</span>
+                <span class="s3"># accessing the keys using their values (reverse access of dictionary values)</span>
+                <span class="s1">decipher += MORSE_CODE_DICT[citext]</span>
+                <span class="s1">citext = </span><span class="s2">''</span>
+    <span class="s0">return </span><span class="s1">decipher</span>
+
+
+<span class="s3"># driver function to run the program</span>
+<span class="s0">def </span><span class="s1">main():</span>
+    <span class="s1">MORSE_CODE_DICT = load_morse_dictionary()</span>
+
+    <span class="s3"># ask user for filename.</span>
+    <span class="s1">filename = input(</span><span class="s2">&quot;Enter the file of morsecode, which you want to decode:&quot;</span><span class="s1">)</span>
+
+    <span class="s3"># call the decode fucntion</span>
+    <span class="s1">result = decode_file(filename</span><span class="s0">, </span><span class="s1">MORSE_CODE_DICT)</span>
+
+    <span class="s3"># print the result</span>
+    <span class="s1">print(result)</span>
+
+
+<span class="s3"># Executes the main function</span>
+<span class="s0">if </span><span class="s1">__name__ == </span><span class="s2">'__main__'</span><span class="s1">:</span>
+    <span class="s1">main()</span>
+</pre>
+</body>
+</html>
